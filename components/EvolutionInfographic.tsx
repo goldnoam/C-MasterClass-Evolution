@@ -5,67 +5,115 @@ const STANDARDS = [
   { 
     year: '1998', 
     name: 'C++98', 
-    desc: 'The first official ISO standard. Introduced Templates & STL.',
-    features: ['Standard Template Library (STL)', 'Templates', 'Namespaces', 'Boolean type', 'New casts'],
-    example: `std::vector<int> v = {1, 2, 3};\nstd::sort(v.begin(), v.end());`,
+    desc: 'The foundation of modern computing. Introduced the Standard Template Library (STL), revolutionizing data structures and algorithms.',
+    features: ['STL', 'Templates', 'Namespaces', 'Exceptions', 'RTTI'],
+    example: `std::vector<int> v;\nv.push_back(42);\nstd::sort(v.begin(), v.end());`,
     metrics: { performance: 85, safety: 20, simplicity: 30, modernity: 10 },
     icon: '🏗️'
   },
   { 
     year: '2011', 
     name: 'C++11', 
-    desc: 'The "Renaissance". Added auto, lambdas, smart pointers, & move semantics.',
-    features: ['Move Semantics', 'Lambda Expressions', 'Auto Keyword', 'Smart Pointers', 'Range-based for', 'nullptr'],
-    example: `auto lambda = [](int x) { return x * x; };\nstd::unique_ptr<int> p = std::make_unique<int>(10);`,
+    desc: 'The "Modern C++" Renaissance. A massive leap forward with move semantics, lambdas, and thread support.',
+    features: ['Move Semantics', 'Lambdas', 'Auto', 'Smart Pointers', 'Threads', 'constexpr'],
+    example: `auto f = [](auto x) { return x * x; };\nstd::unique_ptr<int> p = std::make_unique<int>(5);`,
     metrics: { performance: 95, safety: 55, simplicity: 50, modernity: 40 },
     icon: '🚀'
   },
   { 
     year: '2014', 
     name: 'C++14', 
-    desc: 'Refinements to C++11. Added generic lambdas & binary literals.',
-    features: ['Generic Lambdas', 'Return type deduction', 'std::make_unique', 'Variable templates', 'Binary literals'],
-    example: `auto generic = [](auto a, auto b) { return a + b; };\nint b = 0b1010;`,
+    desc: 'Completing the vision of C++11. Refined generic lambdas and relaxed constexpr constraints.',
+    features: ['Generic Lambdas', 'Binary Literals', 'Digit Separators', 'std::make_unique'],
+    example: `auto sum = [](auto a, auto b) { return a + b; };\nint mask = 0b1010_0101;`,
     metrics: { performance: 96, safety: 60, simplicity: 65, modernity: 50 },
     icon: '🛠️'
   },
   { 
     year: '2017', 
     name: 'C++17', 
-    desc: 'Modern power. Structured bindings, std::optional, and fold expressions.',
-    features: ['Structured Bindings', 'std::optional', 'std::variant', 'std::any', 'if constexpr', 'Fold expressions'],
-    example: `auto [x, y] = get_point();\nif constexpr (std::is_integral_v<T>) { ... }`,
+    desc: 'Power and Clarity. Structured bindings and std::optional made complex logic easier to express safely.',
+    features: ['Structured Bindings', 'std::optional', 'std::variant', 'if constexpr', 'Filesystem'],
+    example: `auto [it, ok] = my_map.insert({k, v});\nif (ok) { /* ... */ }`,
     metrics: { performance: 97, safety: 70, simplicity: 75, modernity: 70 },
     icon: '🧩'
   },
   { 
     year: '2020', 
     name: 'C++20', 
-    desc: 'Massive update. Modules, Concepts, Ranges, and Coroutines.',
-    features: ['Concepts', 'Ranges Library', 'Modules', 'Coroutines', 'Spaceship operator (<=>)', 'std::format'],
-    example: `template<typename T> concept Numeric = std::is_arithmetic_v<T>;\nauto res = vec | std::views::filter(odd);`,
+    desc: 'The Big Four: Concepts, Ranges, Modules, and Coroutines. A generational shift in how we write C++.',
+    features: ['Concepts', 'Ranges', 'Modules', 'Coroutines', '<=> operator'],
+    example: `template<typename T> concept Float = std::is_floating_point_v<T>;\nauto r = v | views::filter(even);`,
     metrics: { performance: 98, safety: 85, simplicity: 80, modernity: 90 },
     icon: '🌀'
   },
   { 
     year: '2023', 
     name: 'C++23', 
-    desc: 'Functional touch. std::expected, deducing this, & stacktrace.',
-    features: ['std::expected', 'Deducing this', 'Multidimensional subscript', 'std::stacktrace', 'Extended float types'],
-    example: `std::expected<double, Error> divide(double a, double b);\nstruct X { void f(this X& self); };`,
+    desc: 'Functional Polish. Added std::expected and multi-dimensional subscripting to the standard arsenal.',
+    features: ['std::expected', 'Deducing this', 'std::mdspan', 'std::print', 'std::stacktrace'],
+    example: `std::expected<int, error> parse(string s);\nauto val = parse("123").value_or(0);`,
     metrics: { performance: 99, safety: 92, simplicity: 85, modernity: 95 },
     icon: '⚡'
   },
   { 
     year: '2026', 
     name: 'C++26', 
-    desc: 'The Future Horizon. Aiming for Reflection, Contracts, and static safety.',
-    features: ['Static Reflection', 'Contracts', 'Pack Indexing', 'Placeholder variables', 'std::execution', 'Hazard Pointers'],
-    example: `// Static Reflection Concept\nfor... (auto m : std::meta::members_of(^MyStruct)) {\n    std::print("Member: {}", std::meta::name_of(m));\n}\nvoid process(int x) [[pre: x > 0]];`,
+    desc: 'The Next Frontier. Focusing on static reflection, formal contracts, and safer concurrency models.',
+    features: ['Reflection', 'Contracts', 'Pack Indexing', 'Placeholders', 'Hazard Pointers'],
+    example: `[[pre: divisor != 0]]\nauto divide(int n, int d) { return n / d; }\nauto [_, important] = pair;`,
     metrics: { performance: 100, safety: 98, simplicity: 95, modernity: 100 },
     icon: '✨'
   },
 ];
+
+const CapabilityRadar: React.FC<{ metrics: any }> = ({ metrics }) => {
+  const size = 160;
+  const center = size / 2;
+  const radius = size * 0.4;
+  
+  // Normalized points for Performance, Safety, Simplicity, Modernity
+  const keys = ['performance', 'safety', 'simplicity', 'modernity'];
+  const points = keys.map((key, i) => {
+    const angle = (i * Math.PI * 2) / keys.length - Math.PI / 2;
+    const value = (metrics[key] / 100) * radius;
+    return {
+      x: center + value * Math.cos(angle),
+      y: center + value * Math.sin(angle),
+      labelX: center + (radius + 15) * Math.cos(angle),
+      labelY: center + (radius + 15) * Math.sin(angle),
+      label: key.charAt(0).toUpperCase() + key.slice(1)
+    };
+  });
+
+  const pathData = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
+
+  return (
+    <div className="relative w-40 h-40 mx-auto">
+      <svg width={size} height={size} className="overflow-visible">
+        {/* Web circles */}
+        {[0.25, 0.5, 0.75, 1].map(r => (
+          <circle key={r} cx={center} cy={center} r={radius * r} fill="none" className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+        ))}
+        {/* Axes */}
+        {points.map((p, i) => (
+          <line key={i} x1={center} y1={center} x2={center + radius * Math.cos((i * Math.PI * 2) / keys.length - Math.PI / 2)} y2={center + radius * Math.sin((i * Math.PI * 2) / keys.length - Math.PI / 2)} className="stroke-slate-200 dark:stroke-slate-800" strokeWidth="1" />
+        ))}
+        {/* Labels */}
+        {points.map((p, i) => (
+          <text key={i} x={p.labelX} y={p.labelY} textAnchor="middle" className="text-[9px] font-bold fill-slate-400 dark:fill-slate-500 uppercase">
+            {p.label}
+          </text>
+        ))}
+        {/* Shape */}
+        <path d={pathData} className="fill-indigo-500/20 stroke-indigo-500" strokeWidth="2" strokeLinejoin="round" />
+        {points.map((p, i) => (
+          <circle key={i} cx={p.x} cy={p.y} r="3" className="fill-indigo-500 shadow-xl" />
+        ))}
+      </svg>
+    </div>
+  );
+};
 
 const MetricBar: React.FC<{ label: string; value: number; color: string; delay: number }> = ({ label, value, color, delay }) => {
   const [width, setWidth] = useState(0);
@@ -93,12 +141,11 @@ const MetricBar: React.FC<{ label: string; value: number; color: string; delay: 
 const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
   const [selectedStandard, setSelectedStandard] = useState<typeof STANDARDS[0] | null>(null);
 
-  // Growth path calculation for SVG
   const generatePath = () => {
     const step = 100 / (STANDARDS.length - 1);
     return STANDARDS.map((std, i) => {
       const x = i * step;
-      const y = 80 - (std.metrics.modernity * 0.7); // Higher modernity = lower Y (top)
+      const y = 80 - (std.metrics.modernity * 0.7);
       return `${i === 0 ? 'M' : 'L'} ${x} ${y}`;
     }).join(' ');
   };
@@ -130,7 +177,6 @@ const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
         <div className="flex gap-4 min-w-[1000px] relative pb-6 h-32 items-center z-10">
           {STANDARDS.map((std, i) => (
             <div key={std.name} className="flex-1 relative flex flex-col items-center">
-              {/* Connector Line */}
               {i < STANDARDS.length - 1 && (
                 <div className="absolute top-1/2 left-1/2 w-full h-[1px] dark:bg-slate-800 bg-slate-200 z-0" />
               )}
@@ -139,7 +185,6 @@ const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
                 onClick={() => setSelectedStandard(std)}
                 className={`group relative z-10 flex flex-col items-center transition-all duration-500 transform hover:-translate-y-2`}
               >
-                {/* Year Bubble */}
                 <div className={`w-14 h-14 rounded-2xl border-2 flex flex-col items-center justify-center mb-4 transition-all duration-500 shadow-lg
                   ${std.year === '2026' 
                     ? 'border-dashed border-cyan-500 bg-cyan-500/10 text-cyan-400 animate-pulse' 
@@ -147,12 +192,9 @@ const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
                   <span className="text-[10px] font-black opacity-50">{std.year}</span>
                   <span className="text-lg">{std.icon}</span>
                 </div>
-
                 <h4 className="text-[11px] font-black dark:text-slate-200 text-slate-800 uppercase tracking-tighter group-hover:text-indigo-500 transition-colors">
                   {std.name}
                 </h4>
-
-                {/* Growth indicator dot */}
                 <div className="absolute -bottom-2 w-1.5 h-1.5 rounded-full bg-indigo-500 opacity-0 group-hover:opacity-100 transition-all scale-0 group-hover:scale-100 shadow-[0_0_10px_#6366f1]" />
               </button>
             </div>
@@ -160,41 +202,41 @@ const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
         </div>
       </div>
 
-      {/* Standard Detail Modal */}
       {selectedStandard && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-300" onClick={() => setSelectedStandard(null)}>
           <div className="w-full max-w-5xl dark:bg-slate-900 bg-white rounded-3xl shadow-2xl border dark:border-slate-800 border-slate-200 overflow-hidden flex flex-col md:flex-row max-h-[90vh] scale-in" onClick={e => e.stopPropagation()}>
             
-            {/* Modal Left Sidebar: Profile & Metrics */}
             <div className="w-full md:w-72 dark:bg-slate-950/50 bg-slate-50 p-8 border-r dark:border-slate-800 border-slate-200 flex flex-col gap-8 shrink-0">
               <div className="text-center">
                 <div className="text-5xl mb-4 p-4 rounded-2xl dark:bg-slate-900 bg-white border dark:border-slate-800 border-slate-200 inline-block shadow-xl">
                   {selectedStandard.icon}
                 </div>
                 <h3 className="font-black text-3xl dark:text-white text-slate-900">{selectedStandard.name}</h3>
-                <p className="text-[10px] font-bold dark:text-slate-500 text-slate-400 uppercase tracking-[0.3em] mt-1">Capability Profile</p>
+                <p className="text-[10px] font-bold dark:text-slate-500 text-slate-400 uppercase tracking-[0.3em] mt-1">Standard Health</p>
+              </div>
+
+              {/* Enhanced Interactive Radar Chart */}
+              <div className="py-4">
+                <CapabilityRadar metrics={selectedStandard.metrics} />
               </div>
 
               <div className="space-y-6">
                 <MetricBar label="Performance" value={selectedStandard.metrics.performance} color="bg-rose-500" delay={100} />
-                <MetricBar label="Type Safety" value={selectedStandard.metrics.safety} color="bg-emerald-500" delay={300} />
-                <MetricBar label="Simplicity" value={selectedStandard.metrics.simplicity} color="bg-amber-500" delay={500} />
-                <MetricBar label="Modernity" value={selectedStandard.metrics.modernity} color="bg-indigo-500" delay={700} />
+                <MetricBar label="Modernity" value={selectedStandard.metrics.modernity} color="bg-indigo-500" delay={300} />
               </div>
 
               <div className="mt-auto p-4 rounded-xl dark:bg-slate-900 bg-white border dark:border-slate-800 border-slate-200 text-center">
                 <div className="text-[9px] font-bold text-slate-500 uppercase mb-1">Standard Status</div>
                 <div className="text-[11px] font-black dark:text-emerald-400 text-emerald-600">
-                  {parseInt(selectedStandard.year) <= 2023 ? 'RELEASED' : 'PROPOSED'}
+                  {parseInt(selectedStandard.year) <= 2023 ? 'STABLE' : 'EVOLVING'}
                 </div>
               </div>
             </div>
 
-            {/* Modal Right Area: Content */}
             <div className="flex-1 flex flex-col min-w-0">
               <div className="px-8 py-6 border-b dark:border-slate-800 border-slate-200 flex justify-between items-center shrink-0">
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-black dark:text-slate-500 text-slate-400 uppercase tracking-widest">{selectedStandard.year} Evolution</span>
+                  <span className="text-xs font-black dark:text-slate-500 text-slate-400 uppercase tracking-widest">{selectedStandard.year} Overview</span>
                 </div>
                 <button onClick={() => setSelectedStandard(null)} className="p-2 dark:hover:bg-slate-800 hover:bg-slate-200 rounded-xl transition-all">
                   <svg className="w-6 h-6 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l18 18" /></svg>
@@ -211,12 +253,10 @@ const EvolutionInfographic: React.FC<{ t: any }> = ({ t }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="space-y-4">
                     <h4 className="text-xs font-black text-slate-500 uppercase tracking-[0.2em]">{t.keyFeatures}</h4>
-                    <ul className="space-y-2">
+                    <ul className="grid grid-cols-1 gap-2">
                       {selectedStandard.features.map(f => (
-                        <li key={f} className="flex items-center gap-3 text-sm dark:text-slate-300 text-slate-700">
-                          <svg className="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
+                        <li key={f} className="flex items-center gap-3 text-sm dark:text-slate-300 text-slate-700 p-2 rounded-lg dark:bg-slate-800/30 bg-slate-100/50">
+                          <div className="w-2 h-2 rounded-full bg-indigo-500" />
                           {f}
                         </li>
                       ))}
