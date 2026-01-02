@@ -25,6 +25,7 @@ export interface Topic {
   difficulty: Difficulty;
   standard?: string;
   summary: string;
+  detailedContent?: string;
   initialCode?: string;
   examples?: Example[];
 }
