@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C++ MasterClass: Evolution</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" id="prism-theme" />
+    <style>
+        :root {
+            --base-font-size: 14px;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            font-size: var(--base-font-size);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .font-s { --base-font-size: 12px; }
+        .font-m { --base-font-size: 14px; }
+        .font-l { --base-font-size: 16px; }
+
+        .dark body { background-color: #0f172a; color: #f1f5f9; }
+        .light body { background-color: #f8fafc; color: #1e293b; }
+
+        code, pre { font-family: 'Fira Code', monospace; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        
+        /* Editor Overlays */
+        .editor-container { position: relative; }
+        .editor-textarea {
+            background: transparent !important;
+            color: transparent !important;
+            caret-color: currentColor !important;
+            position: absolute !important;
+            top: 0; left: 0; z-index: 10;
+            resize: none; overflow: hidden;
+            width: 100%; height: 100%;
+            padding: 1.5rem;
+        }
+        .editor-highlight {
+            position: absolute;
+            top: 0; left: 0; z-index: 5;
+            margin: 0 !important;
+            padding: 1.5rem !important;
+            background: transparent !important;
+            pointer-events: none;
+            width: 100%; height: 100%;
+        }
+        .light .editor-textarea { caret-color: #000 !important; }
+        .dark .editor-textarea { caret-color: #fff !important; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body class="transition-colors duration-200">
+    <div id="root"></div>
+</body>
+</html>
